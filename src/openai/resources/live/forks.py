@@ -1104,6 +1104,10 @@ class ForksSessionResource(BaseForksConnectionResource):
         return ForksSessionInstructionsResource(self._connection)
 
     @cached_property
+    def output_audio(self) -> ForksSessionOutputAudioResource:
+        return ForksSessionOutputAudioResource(self._connection)
+
+    @cached_property
     def thinking(self) -> ForksSessionThinkingResource:
         return ForksSessionThinkingResource(self._connection)
 
@@ -1214,6 +1218,12 @@ class ForksSessionInstructionsResource(BaseForksConnectionResource):
         )
 
 
+class ForksSessionOutputAudioResource(BaseForksConnectionResource):
+    @cached_property
+    def fixture(self) -> ForksSessionOutputAudioFixtureResource:
+        return ForksSessionOutputAudioFixtureResource(self._connection)
+
+
 class ForksSessionThinkingResource(BaseForksConnectionResource):
     def append(self, *, content: str, delegation_id: Optional[str], event_id: Optional[str] | Omit = omit) -> None:
         """
@@ -1230,6 +1240,20 @@ class ForksSessionThinkingResource(BaseForksConnectionResource):
                         "event_id": event_id,
                     }
                 ),
+            )
+        )
+
+
+class ForksSessionOutputAudioFixtureResource(BaseForksConnectionResource):
+    def play(self, *, audio: str, event_id: Optional[str] | Omit = omit) -> None:
+        """Play one complete audio fixture through the session output.
+
+        Send this event over the primary WebSocket or a server sideband. Audio must be raw mono PCM16 little-endian at 24 kHz, regardless of the session audio format, and at most 30 seconds. The entire payload is validated before model speech is interrupted and input is muted. Only one fixture can be active. fixture.playing acknowledges acceptance and fixture.played reports server mixer drain. These notifications are not exact transport-media boundaries. Input arriving during playback is dropped and not replayed.
+        """
+        self._connection.send(
+            cast(
+                ForkClientEventParam,
+                strip_not_given({"type": "session.output_audio.fixture.play", "audio": audio, "event_id": event_id}),
             )
         )
 
@@ -1282,6 +1306,10 @@ class AsyncForksSessionResource(BaseAsyncForksConnectionResource):
     @cached_property
     def instructions(self) -> AsyncForksSessionInstructionsResource:
         return AsyncForksSessionInstructionsResource(self._connection)
+
+    @cached_property
+    def output_audio(self) -> AsyncForksSessionOutputAudioResource:
+        return AsyncForksSessionOutputAudioResource(self._connection)
 
     @cached_property
     def thinking(self) -> AsyncForksSessionThinkingResource:
@@ -1398,6 +1426,12 @@ class AsyncForksSessionInstructionsResource(BaseAsyncForksConnectionResource):
         )
 
 
+class AsyncForksSessionOutputAudioResource(BaseAsyncForksConnectionResource):
+    @cached_property
+    def fixture(self) -> AsyncForksSessionOutputAudioFixtureResource:
+        return AsyncForksSessionOutputAudioFixtureResource(self._connection)
+
+
 class AsyncForksSessionThinkingResource(BaseAsyncForksConnectionResource):
     async def append(
         self, *, content: str, delegation_id: Optional[str], event_id: Optional[str] | Omit = omit
@@ -1416,6 +1450,20 @@ class AsyncForksSessionThinkingResource(BaseAsyncForksConnectionResource):
                         "event_id": event_id,
                     }
                 ),
+            )
+        )
+
+
+class AsyncForksSessionOutputAudioFixtureResource(BaseAsyncForksConnectionResource):
+    async def play(self, *, audio: str, event_id: Optional[str] | Omit = omit) -> None:
+        """Play one complete audio fixture through the session output.
+
+        Send this event over the primary WebSocket or a server sideband. Audio must be raw mono PCM16 little-endian at 24 kHz, regardless of the session audio format, and at most 30 seconds. The entire payload is validated before model speech is interrupted and input is muted. Only one fixture can be active. fixture.playing acknowledges acceptance and fixture.played reports server mixer drain. These notifications are not exact transport-media boundaries. Input arriving during playback is dropped and not replayed.
+        """
+        await self._connection.send(
+            cast(
+                ForkClientEventParam,
+                strip_not_given({"type": "session.output_audio.fixture.play", "audio": audio, "event_id": event_id}),
             )
         )
 
