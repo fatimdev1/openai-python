@@ -1,5 +1,28 @@
 # Changelog
 
+## [3.32.0](https://github.com/openai/openai-python/compare/v3.31.0...v3.32.0) (2026-10-15)
+
+
+### Features
+
+* **api:** add regional processing residency options ([#4081](https://github.com/openai/openai-python/issues/4081)) ([21ce0c2](https://github.com/openai/openai-python/commit/21ce0c2eae47b389f25d79095d2ac5aec7812806))
+* **api:** add response error diagnostics and model notices ([#4086](https://github.com/openai/openai-python/issues/4086)) ([e71d781](https://github.com/openai/openai-python/commit/e71d781ac5e7b3f365ac130bf338baaf13ae720d))
+
+
+### Bug Fixes
+
+* **api:** declare Realtime response error messages ([#4083](https://github.com/openai/openai-python/issues/4083)) ([95dbee9](https://github.com/openai/openai-python/commit/95dbee9ee406587053a0a21296eb82418073f2aa))
+
+
+### Chores
+
+* **api:** clarify Decisions request and response fields ([#4079](https://github.com/openai/openai-python/issues/4079)) ([d42accb](https://github.com/openai/openai-python/commit/d42accb1a2d1b75b79edf694b8bfee78c4e90e6a))
+
+
+### Refactors
+
+* share WebSocket connection handling ([#4084](https://github.com/openai/openai-python/issues/4084)) ([70d4738](https://github.com/openai/openai-python/commit/70d473892f7c427a02a3b566add9c86072842e25))
+
 ## [3.31.0](https://github.com/openai/openai-python/compare/v3.30.0...v3.31.0) (2026-10-14)
 
 
